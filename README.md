@@ -200,8 +200,10 @@ docker exec -it dockercompose_flume_1 -n ratings -c conf -f flume.conf  -Dflume.
 
 ### Rest Endpoints
 
-####Ratings
+#### Ratings
 
+| Requirement        | Endpoint           |
+| ------------- |:-------------:|
 |  Which movies has the best average ratings ? | http://localhost:8080//movies/best/{top} or /movies/best/ |
 |  Which genres has the best average ratings ? | http://localhost:8080//genres/best/{top} |
 |  Which genres has more movies ? |  http://localhost:8080//genres/by/movies |
@@ -210,8 +212,10 @@ docker exec -it dockercompose_flume_1 -n ratings -c conf -f flume.conf  -Dflume.
 |  How many movies are distributed by year ? |  http://localhost:8080//movies/by/year |
 |  How many movies are distributed by decade ? |  http://localhost:8080//movies/by/decade |
 
-####Insights
+#### Insights
 
+| Requirement        | Endpoint           |
+| ------------- |:-------------:|
 |  Which movies has the best average ratings ? | http://localhost:8081//insights/movies/best/{top} or /insights/movies/best |
 |  Which genres has the best average ratings ? | http://localhost:8081//insights/genres/best/{top} |
 |  Which genres has more movies ? |  http://localhost:8081//insights/genres/by/movies |
