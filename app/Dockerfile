@@ -37,18 +37,11 @@ RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIES AFTER INS
 RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIES_GENRES AFTER INSERT ON movie_genre BEGIN INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_GENRE','I', new.movie_id, (select title from genres where id = new.ID)); END;" 
 RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIE_RATINGS AFTER INSERT ON movie_ratings BEGIN  INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_RATINGS','I', new.ID,new.movied_id || ',' || new.rating_id || ',' || new.timestamp); END;" 
 
+RUN mkdir -p /tmp/build
+ADD compile-all.sh /tmp/build
 
-# compile ratings-spark and ratings-spring
-RUN mkdir -p /app/ratings-spark
-RUN mkdir -p /app/ratings-spring
-ADD ./ratings-spark  /app/
-ADD ./ratings-spring /app/
+ADD ./ratings-spark/ /app/ratings-spark/
+ADD ./ratings-spring/ /app/ratings-spring/
 
-#WORKDIR /app/ratings-spark/
-# compile spark
-#RUN sbt package
-# compile spring
-#WORKDIR /app/ratings-spring/
-#RUN mvn clean install
+# RUN /tmp/build/compile-all.sh
 
-WORKDIR /root

@@ -5,6 +5,7 @@ services:
     volumes:
      - /db   
      - /app
+     - ./app/ratings-spark:/app2
     tty: true   
   spark:           
     image: sequenceiq/spark:1.6.0
@@ -43,6 +44,5 @@ services:
     environment:
      - FL_VERSION=1.7.0
      - FLUME_AGENT_NAME=ratings
-     - FLUME_CONF_FILE=/var/tmp/flume.conf
-     - FLUME_CONF_DIR=/var/tmp      
-    tty: true 
+     - FLUME_CONF_FILE=/opt/flume/flume.conf
+     - FLUME_CONF_DIR=/opt/flume       

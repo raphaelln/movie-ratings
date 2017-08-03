@@ -75,23 +75,30 @@ class RatingsStreaming(mongoHost:String, mongoPort:Int) {
           import sqlContext.implicits._
           val df = e.toDF()
 
+          val numEvents = e.count()
 
-          logger.info("*****************************************")
-          df.show()
-          logger.info("****************EVENTS CONTADOR"  + df.count())
+          if (numEvents > 0) {
+            logger.info("*****************************************")
+            df.show()
+            logger.info("****************EVENTS CONTADOR"  + df.count())
 
 
-          df.printSchema()
-          logger.info("*****************************************")
+            df.printSchema()
+            logger.info("*****************************************")
 
-          df.registerTempTable("events")
-          //read data from mongodb
-          new LoadRatings(sqlContext, mongoHost, mongoPort)()
-          mergeMovies()
-          mergeMovieGenres()
-          mergeRatings()
-          //runs the insights calculator
-          new CalculateInsights(sqlContext, mongoHost, mongoPort)()
+            df.registerTempTable("events")
+            //read data from mongodb
+            new LoadRatings(sqlContext, mongoHost, mongoPort)()
+            mergeMovies()
+            mergeMovieGenres()
+            mergeRatings()
+            //runs the insights calculator
+            new CalculateInsights(sqlContext, mongoHost, mongoPort)()
+          } else {
+            logger.info("**************** NO EVENTS RECEIVED, NOTHING TO DO.")
+          }
+
+
       })
 
       streamContext.start()
