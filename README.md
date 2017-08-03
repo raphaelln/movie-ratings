@@ -78,7 +78,7 @@ Fortunately the sqlite has a small tool called *sqlite3*, this is a shell client
 So for the ingest the following command as used:
 
 ```
-sqlite3 
+sqlite3 -noheader -separator "|" /db/twitter-movie-ratings.db "select m.id, m.title, m.year, GROUP_CONCAT(distinct(g.title)) as genres, mv.id as rating_id, r.id as rating_value, r.feeling, mv.timestamp as ratingDate  from movies m left join movie_genre mg on mg.movie_id = m.id left join genres g on g.id = mg.genre_id inner join movie_ratings mv on mv.movie_id = m.id inner join ratings r on r.id = mv.rating_id group by m.id, m.title,m.year,rating_id,rating_value, r.feeling, ratingDate " > /db/ratings.in
 ```
 
 The main idea was store the file in the hdfs, by using sqoop, but due the incompatibility, a file was generated and the following command is necessary to ingest data in the hdfs:
@@ -107,7 +107,7 @@ After the ingestion phase, we need to continuous streaming data from the relatio
 
 The following picture shows us how the streaming pipeline was architect:
 
-![](/assets/computeRoutes.png)
+![](/assets/ratings.png)
 
 The above diagram show us the following components:
 
@@ -157,7 +157,8 @@ Some of technologies used:
 * spark-streaming-flume
 * spark-mongodb_2.11.011.1
 * flume-ng-sql-source 1.4.4
-    :warning: I cloned the repository and made a small change because the connection made, was blocking the entire database and the following error was occurred:
+    
+	:warning: I cloned the repository and made a small change because the connection made, was blocking the entire database and the following error was occurred:
      ```
      Database is locked
      ```

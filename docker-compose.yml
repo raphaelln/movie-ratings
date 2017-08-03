@@ -45,3 +45,4 @@ services:
      - FLUME_AGENT_NAME=ratings
      - FLUME_CONF_FILE=/var/tmp/flume.conf
      - FLUME_CONF_DIR=/var/tmp      
+    tty: true 

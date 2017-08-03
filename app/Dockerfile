@@ -26,17 +26,16 @@ RUN \
  
 # compile spark and java
 RUN mkdir /app
-ADD ratings-spark /app
+ADD ratings-spark /app/ratings-spark
 WORKDIR /app/ratings-spark
 # compile spark
 RUN sbt package
-ADD ratings-spring /app
+# compile spring
+ADD ratings-spring /app/ratings-spring
 WORKDIR /app/ratings-spring
-RUN mvn clean install
+#RUN mvn clean install
 
 #prepare database
-RUN apt-get -y upgrade
-RUN apt-get install -y wget
 RUN apt-get install -y unzip
 RUN apt-get install -y sqlite3 libsqlite3-dev
 RUN wget https://raw.githubusercontent.com/aliancahospitalar/backend-software-engineer-test/master/twitter-movie-ratings.zip -O /tmp/db2.zip
