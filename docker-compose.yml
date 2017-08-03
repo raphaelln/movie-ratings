@@ -1,0 +1,47 @@
+version: '2'
+services:
+  app:
+    build: ./app/ .
+    volumes:
+     - /db   
+     - /app
+    tty: true   
+  spark:           
+    image: sequenceiq/spark:1.6.0
+    hostname: "sandbox"
+    command: "-d"
+    links:
+     - mongo     
+    depends_on:
+     - mongo     
+    volumes:
+      - ./spark:/spark
+    volumes_from:
+     - app 
+    ports:
+      - "8088:8088"
+      - "8042:8042"
+      - "50070:50070"
+      - "50075:50075"
+      - "9000:9000"
+      - "4040:4040"
+      - "2122:2122"
+      - "42222:42222"    
+  mongo:    
+    image: mongo:3.4
+    hostname: "sandbox"
+    ports:
+      - "27017:27017"
+      - "28017:28017"
+  flume:    
+    build: ./flume/ .
+    hostname: "sandbox"
+    depends_on:
+     - spark
+    volumes_from:
+     - app 
+    environment:
+     - FL_VERSION=1.7.0
+     - FLUME_AGENT_NAME=ratings
+     - FLUME_CONF_FILE=/var/tmp/flume.conf
+     - FLUME_CONF_DIR=/var/tmp      

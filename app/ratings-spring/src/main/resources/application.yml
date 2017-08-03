@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      database: ratings
+      host: localhost
+      port: 27017
+
+---
+
+spring:
+  profiles: insight
+  data:
+    mongodb:
+      database: insights
+server:
+  port: 8081
