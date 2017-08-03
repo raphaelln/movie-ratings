@@ -196,14 +196,13 @@ With all containers up and ingest phase done, run:
 
 ```
 docker exec -it movieratings_spark_1 spark-submit --packages org.apache.spark:spark-streaming-flume_2.10:1.6.0,com.stratio.datasource:spark-mongodb_2.10:0.11.2 --class com.acme.ratings.StreamingStartUp  /app/ratings-spark/target/scala-2.10/ratings-spark_2.10-1.0.jar mongo 27017
-docker exec -it movieratings_flume_1 -n ratings -c /conf -f flume.conf  -Dflume.root.logger=INFO,console -Dflume.monitoring.type=http -Dflume.monitoring.port=34545
 ```
 
 ### Rest Client
 
 ```
 docker exec -it movieratings_app_1 java -jar /app/ratings-spring/target/ratings-spark-0.0.1-SNAPSHOT.jar
-docker exec -it movieratings_app_1 java -jar java -jar target/ratings-spark-0.0.1-SNAPSHOT.jar --spring.profiles.active=insights
+docker exec -it movieratings_app_1 java -jar /app/ratings-spring/target/ratings-spark-0.0.1-SNAPSHOT.jar --spring.profiles.active=insights
 
 ```
 
@@ -269,4 +268,7 @@ Some improvements could be implemented:
 - Change the insight database to redis.
 - Support to a log monitoring, could also be streaming by flume.
 - Try to build the pipeline with kafka.
-- Create a cluster of nodes on spark.
+- Create a cluster of spark nodes.
+- Select the insights to compute, all incoming events will trigger the compute of all insights, but for an event with an association of a movie and a genre some insights will not be effected. 
+- Better exception handler.
+- Some memory leaks was faced on the flume container, further investigation will be necessary.

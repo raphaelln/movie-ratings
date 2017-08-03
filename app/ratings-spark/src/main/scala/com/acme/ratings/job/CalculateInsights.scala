@@ -11,7 +11,7 @@ import org.apache.spark.sql.functions._
   * @param mongoHost
   * @param mongoPort
   */
-class CalculateInsights(sqlContext: SQLContext, mongoHost:String, mongoPort:Int) {
+class CalculateInsights(sqlContext: SQLContext, mongoHost:String, mongoPort:Int) extends java.io.Serializable {
 
   private val logger = Logger.getLogger(getClass.getName)
 

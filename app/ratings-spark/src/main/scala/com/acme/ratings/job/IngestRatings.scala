@@ -10,7 +10,7 @@ import org.apache.spark.{SparkConf, SparkContext}
 /**
   * Created by rnascimento on 01/08/2017.
   */
-object IngestRatings {
+object IngestRatings extends java.io.Serializable {
 
   val logger = Logger.getLogger(IngestRatings.getClass.getName)
 

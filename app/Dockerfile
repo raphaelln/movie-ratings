@@ -34,8 +34,8 @@ RUN wget http://central.maven.org/maven2/org/xerial/sqlite-jdbc/3.19.3/sqlite-jd
 RUN sqlite3 -noheader -separator "|" /db/twitter-movie-ratings.db "select m.id, m.title, m.year, GROUP_CONCAT(distinct(g.title)) as genres, mv.id as rating_id, r.id as rating_value, r.feeling, mv.timestamp as ratingDate  from movies m left join movie_genre mg on mg.movie_id = m.id left join genres g on g.id = mg.genre_id inner join movie_ratings mv on mv.movie_id = m.id inner join ratings r on r.id = mv.rating_id group by m.id, m.title,m.year,rating_id,rating_value, r.feeling, ratingDate " > /db/ratings.in
 RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TABLE EVENTS (id INTEGER PRIMARY KEY AUTOINCREMENT,target VARCHAR(30),operation VARCHAR(1), KEY_VALUE INTEGER,fields VARCHAR(500));" 
 RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIES AFTER INSERT ON movies BEGIN INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIES','I',new.ID, new.title || ',' || new.year ); END;" 
-RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIES_GENRES AFTER INSERT ON movie_genre BEGIN INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_GENRE','I', new.movie_id, (select title from genres where id = new.ID)); END;" 
-RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIE_RATINGS AFTER INSERT ON movie_ratings BEGIN  INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_RATINGS','I', new.ID,new.movied_id || ',' || new.rating_id || ',' || new.timestamp); END;" 
+RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIES_GENRES AFTER INSERT ON movie_genre BEGIN INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_GENRE','I', new.movie_id, (select title from genres where id = new.genre_id)); END;" 
+RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIE_RATINGS AFTER INSERT ON movie_ratings BEGIN  INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_RATINGS','I', new.ID, new.movie_id || ',' || new.rating_id || ',' || new.timestamp); END;" 
 
 RUN mkdir -p /tmp/build
 ADD compile-all.sh /tmp/build
@@ -43,5 +43,5 @@ ADD compile-all.sh /tmp/build
 ADD ./ratings-spark/ /app/ratings-spark/
 ADD ./ratings-spring/ /app/ratings-spring/
 
-# RUN /tmp/build/compile-all.sh
+RUN /tmp/build/compile-all.sh
 

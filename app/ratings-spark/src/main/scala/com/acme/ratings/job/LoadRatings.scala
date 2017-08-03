@@ -10,7 +10,7 @@ import org.apache.spark.sql.functions._
   * Responsable for loading the ratings from mongodb database
   * @param sqlContext
   */
-class LoadRatings(sqlContext:SQLContext, mongoHost:String, mongoPort:Int) {
+class LoadRatings(sqlContext:SQLContext, mongoHost:String, mongoPort:Int) extends java.io.Serializable {
 
   def apply(): Unit = {
     loadDataFromMongo()

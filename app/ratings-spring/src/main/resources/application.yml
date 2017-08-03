@@ -2,7 +2,7 @@ spring:
   data:
     mongodb:
       database: ratings
-      host: localhost
+      host: mongo
       port: 27017
 
 ---

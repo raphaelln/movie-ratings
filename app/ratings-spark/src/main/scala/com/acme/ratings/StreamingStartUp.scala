@@ -1,6 +1,6 @@
 package com.acme.ratings
 
-import com.acme.ratings.job.RatingsStreaming
+import com.acme.ratings.job.IncomingEventStream
 
 /**
   * Created by rnascimento on 01/08/2017.
@@ -8,7 +8,7 @@ import com.acme.ratings.job.RatingsStreaming
 object StreamingStartUp extends App {
 
   validateRequiredArguments()
-  new RatingsStreaming(args(0), args(1).toInt)()
+  new IncomingEventStream(args(0), args(1).toInt)()
 
   def validateRequiredArguments() {
 

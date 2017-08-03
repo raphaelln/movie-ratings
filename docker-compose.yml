@@ -6,6 +6,7 @@ services:
      - /db   
      - /app
      - ./app/ratings-spark:/app2
+     - ./app/ratings-spring:/app3
     tty: true   
   spark:           
     image: sequenceiq/spark:1.6.0
