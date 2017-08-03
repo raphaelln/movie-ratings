@@ -47,9 +47,7 @@ As a software engineer at acme corporation build a solution regarding the follow
 
 Following the ER diagram of the database:
 
-<p align="center">
 ![](/assets/database.png)
-</p>
 
 
 Solution
@@ -109,9 +107,7 @@ After the ingestion phase, we need to continuous streaming data from the relatio
 
 The following picture shows us how the streaming pipeline was architect:
 
-<p align="center">
 ![](/assets/ratings.png)
-</p>
 
 The above diagram show us the following components:
 
