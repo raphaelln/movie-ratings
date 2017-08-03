@@ -26,13 +26,13 @@ RUN \
  
 # compile spark and java
 RUN mkdir /app
-COPY ratings-spark /app/ratings-spark
-WORKDIR /app/ratings-spark
+ADD ratings-spark /app/ratings-spark/
+WORKDIR /app/ratings-spark/
 # compile spark
 RUN sbt package
 # compile spring
-COPY ratings-spring /app/ratings-spring
-WORKDIR /app/ratings-spring
+ADD ratings-spring /app/ratings-spring/
+WORKDIR /app/ratings-spring/
 #RUN mvn clean install
 
 #prepare database
