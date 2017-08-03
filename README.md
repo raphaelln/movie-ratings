@@ -201,8 +201,8 @@ docker exec -it movieratings_spark_1 spark-submit --packages org.apache.spark:sp
 ### Rest Client
 
 ```
-docker exec -it movieratings_app_1 java -jar /app/ratings-spring/target/ratings-spark-0.0.1-SNAPSHOT.jar
-docker exec -it movieratings_app_1 java -jar /app/ratings-spring/target/ratings-spark-0.0.1-SNAPSHOT.jar --spring.profiles.active=insights
+docker exec -it movieratings_app_1 java -jar /app/ratings-spring/target/ratings-spark-0.0.1-SNAPSHOT.jar --spring.data.mongodb.host=mongo
+docker exec -it movieratings_app_1 java -jar /app/ratings-spring/target/ratings-spark-0.0.1-SNAPSHOT.jar --spring.data.mongodb.host=mongo --spring.profiles.active=insight
 
 ```
 
@@ -212,25 +212,25 @@ docker exec -it movieratings_app_1 java -jar /app/ratings-spring/target/ratings-
 
 | Requirement        | Endpoint           |
 | ------------- |:-------------:|
-|  Which movies has the best average ratings ? | http://localhost:8080//movies/best/{top} or /movies/best/ |
-|  Which genres has the best average ratings ? | http://localhost:8080//genres/best/{top} |
-|  Which genres has more movies ? |  http://localhost:8080//genres/by/movies |
-|  What is the average rating by genre ? | http://localhost:8080//genres/best/ |
-|  What is the average rating by year ? |  http://localhost:8080//movies/year |
-|  How many movies are distributed by year ? |  http://localhost:8080//movies/by/year |
-|  How many movies are distributed by decade ? |  http://localhost:8080//movies/by/decade |
+|  Which movies has the best average ratings ? | http://localhost:9080/movies/best/{top} or http://localhost:9080/movies/best/ |
+|  Which genres has the best average ratings ? | http://localhost:9080/genres/best/{top} |
+|  Which genres has more movies ? |  http://localhost:9080/genres/by/movies |
+|  What is the average rating by genre ? | http://localhost:9080/genres/best/ |
+|  What is the average rating by year ? |  http://localhost:9080/movies/year |
+|  How many movies are distributed by year ? |  http://localhost:9080//movies/by/year |
+|  How many movies are distributed by decade ? |  http://localhost:9080/movies/by/decade |
 
 #### Insights
 
 | Requirement        | Endpoint           |
 | ------------- |:-------------:|
-|  Which movies has the best average ratings ? | http://localhost:8081//insights/movies/best/{top} or /insights/movies/best |
-|  Which genres has the best average ratings ? | http://localhost:8081//insights/genres/best/{top} |
-|  Which genres has more movies ? |  http://localhost:8081//insights/genres/by/movies |
-|  What is the average rating by genre ? | http://localhost:8081//insights/genres/best/ |
-|  What is the average rating by year ? |  http://localhost:8081//insights/movies/year |
-|  How many movies are distributed by year ? |  http://localhost:8081//insights/movies/by/year |
-|  How many movies are distributed by decade ? |  http://localhost:8081//insights/movies/by/decade |
+|  Which movies has the best average ratings ? | http://localhost:9081/insights/movies/best/{top} or  http://localhost:9081/insights/movies/best |
+|  Which genres has the best average ratings ? | http://localhost:9081/insights/genres/best/{top} |
+|  Which genres has more movies ? |  http://localhost:9081//insights/genres/by/movies |
+|  What is the average rating by genre ? | http://localhost:9081/insights/genres/best/ |
+|  What is the average rating by year ? |  http://localhost:9081/insights/movies/year |
+|  How many movies are distributed by year ? |  http://localhost:9081/insights/movies/by/year |
+|  How many movies are distributed by decade ? |  http://localhost:9081/insights/movies/by/decade |
 
 
 #### Testing Streaming

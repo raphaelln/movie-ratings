@@ -8,6 +8,9 @@ services:
      - ./app/ratings-spark:/app2
      - ./app/ratings-spring:/app3
     tty: true   
+    ports:
+      - "9080:8080"
+      - "9081:8081"
   spark:           
     image: sequenceiq/spark:1.6.0
     hostname: "sandbox"
