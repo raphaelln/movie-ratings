@@ -158,11 +158,13 @@ Some of technologies used:
 * spark-mongodb_2.11.011.1
 * flume-ng-sql-source 1.4.4
     
-	:warning: I cloned the repository and made a small change because the connection made, was blocking the entire database and the following error was occurred:
-     ```
-     Database is locked
-     ```
-     So, when flume is alive, no more connections with the relational database could be made, and new inserts on the movies table as impossible to be made. A small change was made, to avoid the flume to keep with the connection after the queries the database resolve this problem.
+   :warning: I have cloned the repository and made a small change in code because the custom source grab the connection, these was blocking the entire database and the following error was occurred:
+   
+   ```
+   Database is locked
+   ```
+
+So, when flume is alive, no more connections with the relational database could be made, and new inserts on the movies table as impossible to be made. A small change was made, to avoid the flume to keep with the connection after the queries the database resolve this problem.
     
 ###  Build
 
@@ -244,3 +246,10 @@ References and Libraries
 
 Where to go from here
 ====================
+Some improvements could be implemented:
+
+- Implement and streaming other operations on the relational tables.
+- Change the insight database to redis.
+- Support to a log monitoring, could also be streaming by flume.
+- Try to build the pipeline with kafka.
+- Create a cluster of nodes on spark.

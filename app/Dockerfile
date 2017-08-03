@@ -26,12 +26,12 @@ RUN \
  
 # compile spark and java
 RUN mkdir /app
-ADD ratings-spark /app/ratings-spark
+COPY ratings-spark /app/ratings-spark
 WORKDIR /app/ratings-spark
 # compile spark
 RUN sbt package
 # compile spring
-ADD ratings-spring /app/ratings-spring
+COPY ratings-spring /app/ratings-spring
 WORKDIR /app/ratings-spring
 #RUN mvn clean install
 
@@ -47,4 +47,4 @@ RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIES AFTER INS
 RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIES_GENRES AFTER INSERT ON movie_genre BEGIN INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_GENRE','I', new.movie_id, (select title from genres where id = new.ID)); END;" 
 RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIE_RATINGS AFTER INSERT ON movie_ratings BEGIN  INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_RATINGS','I', new.ID,new.movied_id || ',' || new.rating_id || ',' || new.timestamp); END;" 
 
-
+WORKDIR /root
