@@ -240,8 +240,9 @@ docker exec -it movieratings_app_1 java -jar /app/ratings-spring/target/ratings-
 docker exec -it movieratings_app_1 sqlite3 /db/twitter-movie-ratings.db
 ```
 
-Execute insert statements on the tables (movies, movie_genre and movie_rating), verify if the insights will be updated.
+This command will open the sqlite command line shell, you can easily execute sql statements to insert the data on the relational database. 
 
+Execute insert statements on the tables (movies, movie_genre and movie_rating), verify if the insights will be updated.
 
 References and Libraries
 ====================
