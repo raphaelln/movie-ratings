@@ -185,10 +185,9 @@ docker-compose up
 With all containers up, run:
 
 ```
-docker exec -it ratings hadoop dfsadmin -safemode leave
 docker exec -it dockercompose_spark_1 hdfs dfs -mkdir -p /user/spark/ratings/ingest
 docker exec -it dockercompose_spark_1 hdfs dfs -put /db/ratings.in /user/spark/ratings/ingest
-docker exec -it dockercompose_spark_1 spark-submit --packages org.apache.spark:spark-streaming-flume_2.10:1.6.0,com.stratio.datasource:spark-mongodb_2.10:0.11.2 --class com.acme.ratings.IngestStartUp  /app/ratings-spark/target/scala-2.10/ratings-spark_2.10-1.0.jar  /user/spark/ratings/ingest/ratings.in mongo 27017
+docker exec -it dockercompose_spark_1 spark-submit --packages org.apache.spark:spark-streaming-flume_2.10:1.6.0,com.stratio.datasource:spark-mongodb_2.10:0.11.2 --class com.acme.ratings.IngestStartUp  /app/ratings-spark/target/scala-2.10/ratings-spark_2.10-0.1-SNAPSHOT.jar  /user/spark/ratings/ingest/ratings.in mongo 27017
 ```
 
 ### Streaming
@@ -196,8 +195,16 @@ docker exec -it dockercompose_spark_1 spark-submit --packages org.apache.spark:s
 With all containers up and ingest phase done, run:
 
 ```
-docker exec -it dockercompose_spark_1 spark-submit --packages org.apache.spark:spark-streaming-flume_2.10:1.6.0,com.stratio.datasource:spark-mongodb_2.10:0.11.2 --class com.acme.ratings.StreamingStartUp  /app/ratings-spark/target/scala-2.10/ratings-spark_2.10-1.0.jar mongo 27017
+docker exec -it dockercompose_spark_1 spark-submit --packages org.apache.spark:spark-streaming-flume_2.10:1.6.0,com.stratio.datasource:spark-mongodb_2.10:0.11.2 --class com.acme.ratings.StreamingStartUp  /app/ratings-spark/target/scala-2.10/ratings-spark_2.10-0.1-SNAPSHOT.jar mongo 27017
 docker exec -it dockercompose_flume_1 -n ratings -c conf -f flume.conf  -Dflume.root.logger=INFO,console -Dflume.monitoring.type=http -Dflume.monitoring.port=34545
+```
+
+### Rest Client
+
+```
+docker exec -it dockercompose_app_1 java -jar /app/ratings-spring/target/ratings-spark-0.0.1-SNAPSHOT.jar
+docker exec -it dockercompose_app_1 java -jar java -jar target/ratings-spark-0.0.1-SNAPSHOT.jar --spring.profiles.active=insights
+
 ```
 
 ### Rest Endpoints
@@ -225,6 +232,16 @@ docker exec -it dockercompose_flume_1 -n ratings -c conf -f flume.conf  -Dflume.
 |  What is the average rating by year ? |  http://localhost:8081//insights/movies/year |
 |  How many movies are distributed by year ? |  http://localhost:8081//insights/movies/by/year |
 |  How many movies are distributed by decade ? |  http://localhost:8081//insights/movies/by/decade |
+
+
+#### Testing Streaming
+
+
+```
+docker exec -it dockercompose_app_1 sqlite3 /db/twitter-movie-ratings.db
+```
+
+Execute insert statements on the tables (movies, movie_genre and movie_rating), verify if the insights will be updated.
 
 
 References and Libraries

@@ -23,17 +23,7 @@ RUN \
   rm sbt-$SBT_VERSION.deb && \ 
   apt-get install -y sbt wget curl git maven && \
   sbt sbtVersion  
- 
-# compile spark and java
-RUN mkdir /app
-ADD ratings-spark /app/ratings-spark/
-WORKDIR /app/ratings-spark/
-# compile spark
-RUN sbt package
-# compile spring
-ADD ratings-spring /app/ratings-spring/
-WORKDIR /app/ratings-spring/
-#RUN mvn clean install
+
 
 #prepare database
 RUN apt-get install -y unzip
@@ -46,5 +36,19 @@ RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TABLE EVENTS (id INTEGER PRIMAR
 RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIES AFTER INSERT ON movies BEGIN INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIES','I',new.ID, new.title || ',' || new.year ); END;" 
 RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIES_GENRES AFTER INSERT ON movie_genre BEGIN INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_GENRE','I', new.movie_id, (select title from genres where id = new.ID)); END;" 
 RUN sqlite3 /db/twitter-movie-ratings.db "CREATE TRIGGER INSERT_MOVIE_RATINGS AFTER INSERT ON movie_ratings BEGIN  INSERT INTO EVENTS(TARGET,OPERATION,KEY_VALUE,FIELDS) VALUES ('MOVIE_RATINGS','I', new.ID,new.movied_id || ',' || new.rating_id || ',' || new.timestamp); END;" 
+
+
+# compile ratings-spark and ratings-spring
+RUN mkdir -p /app/ratings-spark
+RUN mkdir -p /app/ratings-spring
+ADD ./ratings-spark  /app/
+ADD ./ratings-spring /app/
+
+#WORKDIR /app/ratings-spark/
+# compile spark
+#RUN sbt package
+# compile spring
+#WORKDIR /app/ratings-spring/
+#RUN mvn clean install
 
 WORKDIR /root
